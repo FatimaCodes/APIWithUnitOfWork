@@ -8,6 +8,8 @@ namespace APIWithUnitOfWork.IRepository
     {
         IGenericRepository<Doctor> Doctors { get; }
         IGenericRepository<Category> Categories { get; }
+        IGenericRepository<Country> Countries { get; }
+
         Task Save();
     }
 }
