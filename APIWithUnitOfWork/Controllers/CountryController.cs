@@ -51,7 +51,7 @@ namespace APIWithUnitOfWork.Controllers
         {
             try
             {
-                var country = await _unitOfWork.Countries.Get(q => q.Id == id, new List<string> { "Hotels" });
+                var country = await _unitOfWork.Countries.Get(q => q.Id == id, new List<string> { "Doctors" });
                 var result = _mapper.Map<CountryDTO>(country);
                 return Ok(result);
             }

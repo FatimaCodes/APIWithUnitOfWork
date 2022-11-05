@@ -1,5 +1,7 @@
 using APIWithUnitOfWork.Configurations;
 using APIWithUnitOfWork.Data;
+using APIWithUnitOfWork.IRepository;
+using APIWithUnitOfWork.Repository;
 using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -28,17 +30,31 @@ namespace APIWithUnitOfWork
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddRazorPages();
+
             services.AddDbContext<DatabaseContext>(options =>
-                            options.UseSqlServer(Configuration.GetConnectionString("sqlConnection"))
-                        );
+                options.UseSqlServer(Configuration.GetConnectionString("sqlConnection"))
+            );
+
+            services.AddCors(o => {
+                o.AddPolicy("AllowAll", builder =>
+                    builder.AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader());
+            });
 
             services.AddAutoMapper(typeof(MapperInitilizer));
+
+            services.AddTransient<IUnitOfWork, UnitOfWork>();
 
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "DoctorTour", Version = "v1" });
             });
+
+            services.AddControllers().AddNewtonsoftJson(op =>
+                op.SerializerSettings.ReferenceLoopHandling =
+                    Newtonsoft.Json.ReferenceLoopHandling.Ignore);
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -48,16 +64,13 @@ namespace APIWithUnitOfWork
             {
                 app.UseDeveloperExceptionPage();
             }
-            else
-            {
-                app.UseExceptionHandler("/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-                app.UseHsts();
-            }
+
+            app.UseSwagger();
+            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "DoctorTour v1"));
 
             app.UseHttpsRedirection();
 
-            app.UseStaticFiles();
+            app.UseCors("AllowAll");
 
             app.UseRouting();
 
@@ -65,7 +78,7 @@ namespace APIWithUnitOfWork
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapRazorPages();
+                endpoints.MapControllers();
             });
         }
     }

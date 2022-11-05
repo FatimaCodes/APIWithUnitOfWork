@@ -29,17 +29,17 @@ namespace APIWithUnitOfWork.Controllers
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> GetCountries()
+        public async Task<IActionResult> GetCategories()
         {
             try
             {
-                var countries = await _unitOfWork.Countries.GetAll();
-                var results = _mapper.Map<IList<CategoryDTO>>(countries);
+                var categories = await _unitOfWork.Categories.GetAll();
+                var results = _mapper.Map<IList<CategoryDTO>>(categories);
                 return Ok(results);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, $"Something Went Wrong in the {nameof(GetCountries)}");
+                _logger.LogError(ex, $"Something Went Wrong in the {nameof(GetCategories)}");
                 return StatusCode(500, "Internal Server Error. Please Try Again Later.");
             }
         }
@@ -51,8 +51,8 @@ namespace APIWithUnitOfWork.Controllers
         {
             try
             {
-                var Category = await _unitOfWork.Countries.Get(q => q.Id == id, new List<string> { "Hotels" });
-                var result = _mapper.Map<CategoryDTO>(Category);
+                var category = await _unitOfWork.Categories.Get(q => q.Id == id, new List<string> { "Doctors" });
+                var result = _mapper.Map<CategoryDTO>(category);
                 return Ok(result);
             }
             catch (Exception ex)

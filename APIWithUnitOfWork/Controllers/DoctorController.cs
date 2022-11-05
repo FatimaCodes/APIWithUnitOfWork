@@ -1,6 +1,5 @@
 ﻿using APIWithUnitOfWork.IRepository;
 using AutoMapper;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -11,7 +10,9 @@ using APIWithUnitOfWork.Models;
 
 namespace APIWithUnitOfWork.Controllers
 {
-    public class DoctorController : Controller
+    [Route("api/[controller]")]
+    [ApiController]
+    public class DoctorController : ControllerBase
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly ILogger<DoctorController> _logger;
@@ -43,7 +44,6 @@ namespace APIWithUnitOfWork.Controllers
             }
         }
 
-        [Authorize]
         [HttpGet("{id:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -51,7 +51,7 @@ namespace APIWithUnitOfWork.Controllers
         {
             try
             {
-                var Doctor = await _unitOfWork.Doctors.Get(q => q.Id == id, new List<string> { "Country" });
+                var Doctor = await _unitOfWork.Doctors.Get(q => q.Id == id);
                 var result = _mapper.Map<DoctorDTO>(Doctor);
                 return Ok(result);
             }
