@@ -1,4 +1,6 @@
+using APIWithUnitOfWork.Configurations;
 using APIWithUnitOfWork.Data;
+using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -6,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.OpenApi.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,8 +30,15 @@ namespace APIWithUnitOfWork
         {
             services.AddRazorPages();
             services.AddDbContext<DatabaseContext>(options =>
-    options.UseSqlServer(Configuration.GetConnectionString("sqlConnection"))
-);
+                            options.UseSqlServer(Configuration.GetConnectionString("sqlConnection"))
+                        );
+
+            services.AddAutoMapper(typeof(MapperInitilizer));
+
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "DoctorTour", Version = "v1" });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -46,6 +56,7 @@ namespace APIWithUnitOfWork
             }
 
             app.UseHttpsRedirection();
+
             app.UseStaticFiles();
 
             app.UseRouting();
