@@ -14,6 +14,8 @@ namespace APIWithUnitOfWork.Configurations
             CreateMap<Category, CreateCategoryDTO>().ReverseMap();
             CreateMap<Doctor, DoctorDTO>().ReverseMap();
             CreateMap<Doctor, CreateDoctorDTO>().ReverseMap();
+            CreateMap<ApiUser, UserDTO>().ReverseMap();
+
         }
     }
 }
