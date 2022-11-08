@@ -7,7 +7,7 @@ namespace APIWithUnitOfWork.IRepository
     public interface IUnitOfWork : IDisposable
     {
         IGenericRepository<Doctor> Doctors { get; }
-        IGenericRepository<Category> Categories { get; }
+        //IGenericRepository<DoctorCategory> Types { get; }
         IGenericRepository<Country> Countries { get; }
 
         Task Save();

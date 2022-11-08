@@ -10,8 +10,8 @@ namespace APIWithUnitOfWork.Configurations
         {
             CreateMap<Country, CountryDTO>().ReverseMap();
             CreateMap<Country, CreateCountryDTO>().ReverseMap();
-            CreateMap<Category, CategoryDTO>().ReverseMap();
-            CreateMap<Category, CreateCategoryDTO>().ReverseMap();
+            //CreateMap<Category, CategoryDTO>().ReverseMap();
+            //CreateMap<Category, CreateCategoryDTO>().ReverseMap();
             CreateMap<Doctor, DoctorDTO>().ReverseMap();
             CreateMap<Doctor, CreateDoctorDTO>().ReverseMap();
             CreateMap<ApiUser, UserDTO>().ReverseMap();

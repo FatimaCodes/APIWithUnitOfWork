@@ -10,7 +10,7 @@ namespace APIWithUnitOfWork.Repository
         private readonly DatabaseContext _context;
         private IGenericRepository<Doctor> _doctors;
         private IGenericRepository<Country> _countries;
-        private IGenericRepository<Category> _categories;
+        //private IGenericRepository<Category> _categories;
 
         public UnitOfWork(DatabaseContext context)
         {
@@ -18,7 +18,7 @@ namespace APIWithUnitOfWork.Repository
         }
         public IGenericRepository<Country> Countries => _countries ??= new GenericRepository<Country>(_context);
         public IGenericRepository<Doctor> Doctors => _doctors ??= new GenericRepository<Doctor>(_context);
-        public IGenericRepository<Category> Categories => _categories ??= new GenericRepository<Category>(_context);
+        //public IGenericRepository<Category> Categories => _categories ??= new GenericRepository<Category>(_context);
 
 
         public void Dispose()

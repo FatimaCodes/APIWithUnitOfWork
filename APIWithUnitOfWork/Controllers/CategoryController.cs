@@ -26,40 +26,40 @@ namespace APIWithUnitOfWork.Controllers
             _mapper = mapper;
         }
 
-        [HttpGet]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> GetCategories()
-        {
-            try
-            {
-                var categories = await _unitOfWork.Categories.GetAll();
-                var results = _mapper.Map<IList<CategoryDTO>>(categories);
-                return Ok(results);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, $"Something Went Wrong in the {nameof(GetCategories)}");
-                return StatusCode(500, "Internal Server Error. Please Try Again Later.");
-            }
-        }
+        //[HttpGet]
+        //[ProducesResponseType(StatusCodes.Status200OK)]
+        //[ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        //public async Task<IActionResult> GetCategories()
+        //{
+        //    try
+        //    {
+        //        var categories = await _unitOfWork.Categories.GetAll();
+        //        var results = _mapper.Map<IList<CategoryDTO>>(categories);
+        //        return Ok(results);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        _logger.LogError(ex, $"Something Went Wrong in the {nameof(GetCategories)}");
+        //        return StatusCode(500, "Internal Server Error. Please Try Again Later.");
+        //    }
+        //}
 
-        [HttpGet("{id:int}")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> GetCategory(int id)
-        {
-            try
-            {
-                var category = await _unitOfWork.Categories.Get(q => q.Id == id, new List<string> { "Doctors" });
-                var result = _mapper.Map<CategoryDTO>(category);
-                return Ok(result);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, $"Something Went Wrong in the {nameof(GetCategory)}");
-                return StatusCode(500, "Internal Server Error. Please Try Again Later.");
-            }
-        }
+        //[HttpGet("{id:int}")]
+        //[ProducesResponseType(StatusCodes.Status200OK)]
+        //[ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        //public async Task<IActionResult> GetCategory(int id)
+        //{
+        //    try
+        //    {
+        //        var category = await _unitOfWork.Categories.Get(q => q.Id == id, new List<string> { "Doctors" });
+        //        var result = _mapper.Map<CategoryDTO>(category);
+        //        return Ok(result);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        _logger.LogError(ex, $"Something Went Wrong in the {nameof(GetCategory)}");
+        //        return StatusCode(500, "Internal Server Error. Please Try Again Later.");
+        //    }
+        //}
     }
 }

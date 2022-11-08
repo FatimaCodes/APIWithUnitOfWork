@@ -23,11 +23,13 @@ namespace APIWithUnitOfWork.Models
         [Required]
         public int CountryId { get; set; }
     }
+    public class UpdateDoctorDTO : CreateDoctorDTO
+    {
 
+    }
     public class DoctorDTO : CreateDoctorDTO
     {
         public int Id { get; set; }
-        public CategoryDTO Category { get; set; }
         public CountryDTO Country { get; set; }
 
     }

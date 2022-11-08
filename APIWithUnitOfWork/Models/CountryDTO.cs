@@ -15,6 +15,10 @@ namespace APIWithUnitOfWork.Models
 
         public int FullName { get; set; }
     }
+    public class UpdateCountryDTO : CreateCountryDTO
+    {
+        public IList<CreateDoctorDTO> Doctors { get; set; }
+    }
     public class CountryDTO : CreateCountryDTO
     {
         public int Id { get; set; }

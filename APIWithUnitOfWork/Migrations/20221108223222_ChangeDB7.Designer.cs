@@ -4,14 +4,16 @@ using APIWithUnitOfWork.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace APIWithUnitOfWork.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20221108223222_ChangeDB7")]
+    partial class ChangeDB7
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -90,21 +92,6 @@ namespace APIWithUnitOfWork.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
-            modelBuilder.Entity("APIWithUnitOfWork.Data.Category", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .UseIdentityColumn();
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Category");
-                });
-
             modelBuilder.Entity("APIWithUnitOfWork.Data.Country", b =>
                 {
                     b.Property<int>("Id")
@@ -165,9 +152,6 @@ namespace APIWithUnitOfWork.Migrations
                     b.Property<string>("Address")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("CategoryId")
-                        .HasColumnType("int");
-
                     b.Property<int>("CountryId")
                         .HasColumnType("int");
 
@@ -182,8 +166,6 @@ namespace APIWithUnitOfWork.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CategoryId");
-
                     b.HasIndex("CountryId");
 
                     b.ToTable("Doctors");
@@ -193,7 +175,6 @@ namespace APIWithUnitOfWork.Migrations
                         {
                             Id = 1,
                             Address = "Address1",
-                            CategoryId = 0,
                             CountryId = 1,
                             Name = "Mina",
                             Rating = 5.0,
@@ -203,7 +184,6 @@ namespace APIWithUnitOfWork.Migrations
                         {
                             Id = 2,
                             Address = "Address1",
-                            CategoryId = 0,
                             CountryId = 1,
                             Name = "Andi",
                             Rating = 4.4000000000000004,
@@ -213,7 +193,6 @@ namespace APIWithUnitOfWork.Migrations
                         {
                             Id = 3,
                             Address = "Address1",
-                            CategoryId = 0,
                             CountryId = 1,
                             Name = "Sara",
                             Rating = 3.5,
@@ -223,7 +202,6 @@ namespace APIWithUnitOfWork.Migrations
                         {
                             Id = 4,
                             Address = "Address1",
-                            CategoryId = 0,
                             CountryId = 2,
                             Name = "John",
                             Rating = 4.9000000000000004,
@@ -233,7 +211,6 @@ namespace APIWithUnitOfWork.Migrations
                         {
                             Id = 5,
                             Address = "Address1",
-                            CategoryId = 0,
                             CountryId = 3,
                             Name = "Adams",
                             Rating = 3.7999999999999998,
@@ -270,15 +247,15 @@ namespace APIWithUnitOfWork.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "267031e3-75c0-4838-91e2-c3b215c2d2c8",
-                            ConcurrencyStamp = "ca12e09e-ce37-4cd5-bc81-ab15095e5e9f",
+                            Id = "50577236-0dd7-478f-8e13-69ade0df06bc",
+                            ConcurrencyStamp = "047eac05-c102-4abf-aa9b-e0b367280581",
                             Name = "User",
                             NormalizedName = "USER"
                         },
                         new
                         {
-                            Id = "44cb8d90-a306-4578-a3af-8c7d7f55e640",
-                            ConcurrencyStamp = "38f11dd4-831c-4e4c-8e62-9c3240c332d3",
+                            Id = "ce87670b-fc9a-4da0-9c1b-1f57a2e9d5ed",
+                            ConcurrencyStamp = "258f9cb9-d90a-4225-a30e-40c78be86f51",
                             Name = "Administrator",
                             NormalizedName = "ADMINISTRATOR"
                         });
@@ -390,19 +367,11 @@ namespace APIWithUnitOfWork.Migrations
 
             modelBuilder.Entity("APIWithUnitOfWork.Data.Doctor", b =>
                 {
-                    b.HasOne("APIWithUnitOfWork.Data.Category", "Category")
-                        .WithMany("Doctors")
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("APIWithUnitOfWork.Data.Country", "Country")
                         .WithMany("Doctors")
                         .HasForeignKey("CountryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Category");
 
                     b.Navigation("Country");
                 });
@@ -456,11 +425,6 @@ namespace APIWithUnitOfWork.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("APIWithUnitOfWork.Data.Category", b =>
-                {
-                    b.Navigation("Doctors");
                 });
 
             modelBuilder.Entity("APIWithUnitOfWork.Data.Country", b =>

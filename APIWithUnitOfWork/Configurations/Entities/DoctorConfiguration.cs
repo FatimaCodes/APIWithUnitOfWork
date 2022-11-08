@@ -16,7 +16,7 @@ namespace APIWithUnitOfWork.Configurations.Entities
                   Name = "Mina",
                   Surname = "Amini",
                   CountryId = 1,
-                  CategortyId = 1,
+                  //CategoryId = 1,
                   Address = "Address1",
                   Rating = 5
               },
@@ -26,7 +26,7 @@ namespace APIWithUnitOfWork.Configurations.Entities
                   Name = "Andi",
                   Surname = "Naiak",
                   CountryId = 1,
-                  CategortyId = 1,
+                  //CategoryId = 1,
                   Address = "Address1",
                   Rating = 4.4
               },
@@ -36,7 +36,7 @@ namespace APIWithUnitOfWork.Configurations.Entities
                   Name = "Sara",
                   Surname = "Doniat",
                   CountryId = 1,
-                  CategortyId = 1,
+                  //CategoryId = 1,
                   Address = "Address1",
                   Rating = 3.5
               },
@@ -46,7 +46,7 @@ namespace APIWithUnitOfWork.Configurations.Entities
                   Name = "John",
                   Surname = "Wilson",
                   CountryId = 2,
-                  CategortyId = 4,
+                  //CategoryId = 4,
                   Address = "Address1",
                   Rating = 4.9
               },
@@ -56,7 +56,7 @@ namespace APIWithUnitOfWork.Configurations.Entities
                   Name = "Adams",
                   Surname = "Robinson",
                   CountryId = 3,
-                  CategortyId = 5,
+                  //CategoryId = 5,
                   Address = "Address1",
                   Rating = 3.8
               }

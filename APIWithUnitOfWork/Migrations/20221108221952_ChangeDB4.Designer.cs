@@ -4,14 +4,16 @@ using APIWithUnitOfWork.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace APIWithUnitOfWork.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20221108221952_ChangeDB4")]
+    partial class ChangeDB4
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -102,7 +104,39 @@ namespace APIWithUnitOfWork.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Category");
+                    b.ToTable("Categories");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "rhinoplasty"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "Dentist"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "Cardiologist"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Name = "Urology"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Name = "Oncology"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Name = "exp-spine-surgery"
+                        });
                 });
 
             modelBuilder.Entity("APIWithUnitOfWork.Data.Country", b =>
@@ -165,7 +199,7 @@ namespace APIWithUnitOfWork.Migrations
                     b.Property<string>("Address")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("CategoryId")
+                    b.Property<int?>("CategoryId")
                         .HasColumnType("int");
 
                     b.Property<int>("CountryId")
@@ -193,7 +227,6 @@ namespace APIWithUnitOfWork.Migrations
                         {
                             Id = 1,
                             Address = "Address1",
-                            CategoryId = 0,
                             CountryId = 1,
                             Name = "Mina",
                             Rating = 5.0,
@@ -203,7 +236,6 @@ namespace APIWithUnitOfWork.Migrations
                         {
                             Id = 2,
                             Address = "Address1",
-                            CategoryId = 0,
                             CountryId = 1,
                             Name = "Andi",
                             Rating = 4.4000000000000004,
@@ -213,7 +245,6 @@ namespace APIWithUnitOfWork.Migrations
                         {
                             Id = 3,
                             Address = "Address1",
-                            CategoryId = 0,
                             CountryId = 1,
                             Name = "Sara",
                             Rating = 3.5,
@@ -223,7 +254,6 @@ namespace APIWithUnitOfWork.Migrations
                         {
                             Id = 4,
                             Address = "Address1",
-                            CategoryId = 0,
                             CountryId = 2,
                             Name = "John",
                             Rating = 4.9000000000000004,
@@ -233,7 +263,6 @@ namespace APIWithUnitOfWork.Migrations
                         {
                             Id = 5,
                             Address = "Address1",
-                            CategoryId = 0,
                             CountryId = 3,
                             Name = "Adams",
                             Rating = 3.7999999999999998,
@@ -270,15 +299,15 @@ namespace APIWithUnitOfWork.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "267031e3-75c0-4838-91e2-c3b215c2d2c8",
-                            ConcurrencyStamp = "ca12e09e-ce37-4cd5-bc81-ab15095e5e9f",
+                            Id = "83f0b0dc-2e5d-41ed-875b-c2cb4b18905d",
+                            ConcurrencyStamp = "f531a1ce-24b8-42a7-833a-77274f123480",
                             Name = "User",
                             NormalizedName = "USER"
                         },
                         new
                         {
-                            Id = "44cb8d90-a306-4578-a3af-8c7d7f55e640",
-                            ConcurrencyStamp = "38f11dd4-831c-4e4c-8e62-9c3240c332d3",
+                            Id = "e7dd8f85-bdb5-4e5b-a93c-4a0d9e8a086b",
+                            ConcurrencyStamp = "0d3b9a37-00bd-4fb9-97a1-11d16057c767",
                             Name = "Administrator",
                             NormalizedName = "ADMINISTRATOR"
                         });
@@ -390,19 +419,15 @@ namespace APIWithUnitOfWork.Migrations
 
             modelBuilder.Entity("APIWithUnitOfWork.Data.Doctor", b =>
                 {
-                    b.HasOne("APIWithUnitOfWork.Data.Category", "Category")
+                    b.HasOne("APIWithUnitOfWork.Data.Category", null)
                         .WithMany("Doctors")
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CategoryId");
 
                     b.HasOne("APIWithUnitOfWork.Data.Country", "Country")
                         .WithMany("Doctors")
                         .HasForeignKey("CountryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Category");
 
                     b.Navigation("Country");
                 });

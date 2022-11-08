@@ -12,12 +12,11 @@ namespace APIWithUnitOfWork.Data
         { }
         public DbSet<Doctor> Doctors { get; set; }
         public DbSet<Country> Countries { get; set; }
-        public DbSet<Category> Categories { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
             builder.ApplyConfiguration(new RoleConfiguration());
-            builder.ApplyConfiguration(new CategoryConfiguration());
             builder.ApplyConfiguration(new CountryConfiguration());
             builder.ApplyConfiguration(new DoctorConfiguration());
         }

@@ -4,14 +4,16 @@ using APIWithUnitOfWork.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace APIWithUnitOfWork.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20221108222600_ChangeDB6")]
+    partial class ChangeDB6
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -90,21 +92,6 @@ namespace APIWithUnitOfWork.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
-            modelBuilder.Entity("APIWithUnitOfWork.Data.Category", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .UseIdentityColumn();
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Category");
-                });
-
             modelBuilder.Entity("APIWithUnitOfWork.Data.Country", b =>
                 {
                     b.Property<int>("Id")
@@ -165,9 +152,6 @@ namespace APIWithUnitOfWork.Migrations
                     b.Property<string>("Address")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("CategoryId")
-                        .HasColumnType("int");
-
                     b.Property<int>("CountryId")
                         .HasColumnType("int");
 
@@ -180,11 +164,14 @@ namespace APIWithUnitOfWork.Migrations
                     b.Property<string>("Surname")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("TypeId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("CategoryId");
-
                     b.HasIndex("CountryId");
+
+                    b.HasIndex("TypeId");
 
                     b.ToTable("Doctors");
 
@@ -193,7 +180,6 @@ namespace APIWithUnitOfWork.Migrations
                         {
                             Id = 1,
                             Address = "Address1",
-                            CategoryId = 0,
                             CountryId = 1,
                             Name = "Mina",
                             Rating = 5.0,
@@ -203,7 +189,6 @@ namespace APIWithUnitOfWork.Migrations
                         {
                             Id = 2,
                             Address = "Address1",
-                            CategoryId = 0,
                             CountryId = 1,
                             Name = "Andi",
                             Rating = 4.4000000000000004,
@@ -213,7 +198,6 @@ namespace APIWithUnitOfWork.Migrations
                         {
                             Id = 3,
                             Address = "Address1",
-                            CategoryId = 0,
                             CountryId = 1,
                             Name = "Sara",
                             Rating = 3.5,
@@ -223,7 +207,6 @@ namespace APIWithUnitOfWork.Migrations
                         {
                             Id = 4,
                             Address = "Address1",
-                            CategoryId = 0,
                             CountryId = 2,
                             Name = "John",
                             Rating = 4.9000000000000004,
@@ -233,12 +216,26 @@ namespace APIWithUnitOfWork.Migrations
                         {
                             Id = 5,
                             Address = "Address1",
-                            CategoryId = 0,
                             CountryId = 3,
                             Name = "Adams",
                             Rating = 3.7999999999999998,
                             Surname = "Robinson"
                         });
+                });
+
+            modelBuilder.Entity("APIWithUnitOfWork.Data.Type", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Types");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -270,15 +267,15 @@ namespace APIWithUnitOfWork.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "267031e3-75c0-4838-91e2-c3b215c2d2c8",
-                            ConcurrencyStamp = "ca12e09e-ce37-4cd5-bc81-ab15095e5e9f",
+                            Id = "9fbec549-f57f-4181-8bf1-df24c8612fc9",
+                            ConcurrencyStamp = "1c54171c-230e-4998-ac8e-7a01342d75b2",
                             Name = "User",
                             NormalizedName = "USER"
                         },
                         new
                         {
-                            Id = "44cb8d90-a306-4578-a3af-8c7d7f55e640",
-                            ConcurrencyStamp = "38f11dd4-831c-4e4c-8e62-9c3240c332d3",
+                            Id = "d256cd6e-5725-4c70-a0fc-7b9e60f3c9ab",
+                            ConcurrencyStamp = "bd0df3c0-08d2-4320-8d4b-f8cd2f71b868",
                             Name = "Administrator",
                             NormalizedName = "ADMINISTRATOR"
                         });
@@ -390,19 +387,15 @@ namespace APIWithUnitOfWork.Migrations
 
             modelBuilder.Entity("APIWithUnitOfWork.Data.Doctor", b =>
                 {
-                    b.HasOne("APIWithUnitOfWork.Data.Category", "Category")
-                        .WithMany("Doctors")
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("APIWithUnitOfWork.Data.Country", "Country")
                         .WithMany("Doctors")
                         .HasForeignKey("CountryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Category");
+                    b.HasOne("APIWithUnitOfWork.Data.Type", null)
+                        .WithMany("Doctors")
+                        .HasForeignKey("TypeId");
 
                     b.Navigation("Country");
                 });
@@ -458,12 +451,12 @@ namespace APIWithUnitOfWork.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("APIWithUnitOfWork.Data.Category", b =>
+            modelBuilder.Entity("APIWithUnitOfWork.Data.Country", b =>
                 {
                     b.Navigation("Doctors");
                 });
 
-            modelBuilder.Entity("APIWithUnitOfWork.Data.Country", b =>
+            modelBuilder.Entity("APIWithUnitOfWork.Data.Type", b =>
                 {
                     b.Navigation("Doctors");
                 });
