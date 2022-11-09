@@ -31,11 +31,11 @@ namespace APIWithUnitOfWork.Controllers
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> GetDoctors()
+        public async Task<IActionResult> GetDoctors([FromQuery] RequestParams requestParams)
         {
             try
             {
-                var Doctors = await _unitOfWork.Doctors.GetAll();
+                var Doctors = await _unitOfWork.Doctors.GetPagedList(requestParams); ;
                 var results = _mapper.Map<IList<DoctorDTO>>(Doctors);
                 return Ok(results);
             }
