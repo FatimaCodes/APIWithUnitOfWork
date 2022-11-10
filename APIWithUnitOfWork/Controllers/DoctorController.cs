@@ -33,17 +33,11 @@ namespace APIWithUnitOfWork.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetDoctors([FromQuery] RequestParams requestParams)
         {
-            try
-            {
-                var Doctors = await _unitOfWork.Doctors.GetPagedList(requestParams); ;
-                var results = _mapper.Map<IList<DoctorDTO>>(Doctors);
-                return Ok(results);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, $"Something Went Wrong in the {nameof(GetDoctors)}");
-                return StatusCode(500, "Internal Server Error. Please Try Again Later.");
-            }
+
+            var Doctors = await _unitOfWork.Doctors.GetPagedList(requestParams); ;
+            var results = _mapper.Map<IList<DoctorDTO>>(Doctors);
+            return Ok(results);
+
         }
 
         [HttpGet("{id:int}", Name = "GetDoctor")]
@@ -51,17 +45,9 @@ namespace APIWithUnitOfWork.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetDoctor(int id)
         {
-            try
-            {
-                var Doctor = await _unitOfWork.Doctors.Get(q => q.Id == id);
-                var result = _mapper.Map<DoctorDTO>(Doctor);
-                return Ok(result);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, $"Something Went Wrong in the {nameof(GetDoctor)}");
-                return StatusCode(500, "Internal Server Error. Please Try Again Later.");
-            }
+            var Doctor = await _unitOfWork.Doctors.Get(q => q.Id == id);
+            var result = _mapper.Map<DoctorDTO>(Doctor);
+            return Ok(result);
         }
 
         //[Authorize(Roles = "Administrator")]
@@ -76,20 +62,12 @@ namespace APIWithUnitOfWork.Controllers
                 _logger.LogError($"Invalid POST attempt in {nameof(CreateDoctor)}");
                 return BadRequest(ModelState);
             }
+            var doctor = _mapper.Map<Doctor>(DoctorDTO);
+            await _unitOfWork.Doctors.Insert(doctor);
+            await _unitOfWork.Save();
 
-            try
-            {
-                var doctor = _mapper.Map<Doctor>(DoctorDTO);
-                await _unitOfWork.Doctors.Insert(doctor);
-                await _unitOfWork.Save();
+            return CreatedAtRoute("GetDoctor", new { id = doctor.Id }, doctor);
 
-                return CreatedAtRoute("GetDoctor", new { id = doctor.Id }, doctor);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, $"Something Went Wrong in the {nameof(CreateDoctor)}");
-                return StatusCode(500, "Internal Server Error. Please Try Again Later.");
-            }
         }
 
         //[Authorize]
@@ -105,26 +83,19 @@ namespace APIWithUnitOfWork.Controllers
                 return BadRequest(ModelState);
             }
 
-            try
+            var Doctor = await _unitOfWork.Doctors.Get(q => q.Id == id);
+            if (Doctor == null)
             {
-                var Doctor = await _unitOfWork.Doctors.Get(q => q.Id == id);
-                if (Doctor == null)
-                {
-                    _logger.LogError($"Invalid UPDATE attempt in {nameof(UpdateDoctor)}");
-                    return BadRequest("Submitted data is invalid");
-                }
-
-                _mapper.Map(DoctorDTO, Doctor);
-                _unitOfWork.Doctors.Update(Doctor);
-                await _unitOfWork.Save();
-
-                return NoContent();
+                _logger.LogError($"Invalid UPDATE attempt in {nameof(UpdateDoctor)}");
+                return BadRequest("Submitted data is invalid");
             }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, $"Something Went Wrong in the {nameof(UpdateDoctor)}");
-                return StatusCode(500, "Internal Server Error. Please Try Again Later.");
-            }
+
+            _mapper.Map(DoctorDTO, Doctor);
+            _unitOfWork.Doctors.Update(Doctor);
+            await _unitOfWork.Save();
+
+            return NoContent();
+
         }
 
         [Authorize]
@@ -140,25 +111,17 @@ namespace APIWithUnitOfWork.Controllers
                 return BadRequest();
             }
 
-            try
+            var Doctor = await _unitOfWork.Doctors.Get(q => q.Id == id);
+            if (Doctor == null)
             {
-                var Doctor = await _unitOfWork.Doctors.Get(q => q.Id == id);
-                if (Doctor == null)
-                {
-                    _logger.LogError($"Invalid DELETE attempt in {nameof(DeleteDoctor)}");
-                    return BadRequest("Submitted data is invalid");
-                }
-
-                await _unitOfWork.Doctors.Delete(id);
-                await _unitOfWork.Save();
-
-                return NoContent();
+                _logger.LogError($"Invalid DELETE attempt in {nameof(DeleteDoctor)}");
+                return BadRequest("Submitted data is invalid");
             }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, $"Something Went Wrong in the {nameof(DeleteDoctor)}");
-                return StatusCode(500, "Internal Server Error. Please Try Again Later.");
-            }
+
+            await _unitOfWork.Doctors.Delete(id);
+            await _unitOfWork.Save();
+
+            return NoContent();
         }
     }
 }

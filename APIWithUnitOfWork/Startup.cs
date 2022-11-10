@@ -65,10 +65,17 @@ namespace APIWithUnitOfWork
 
             app.UseSwagger();
             app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "DoctorTour v1"));
+
+            app.ConfigureExceptionHandler();
+
             app.UseHttpsRedirection();
+
             app.UseCors("AllowAll");
+
             app.UseRouting();
+
             app.UseAuthentication();
+
             app.UseAuthorization();
             app.UseEndpoints(endpoints =>
             {
