@@ -12,6 +12,8 @@ namespace APIWithUnitOfWork.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [ApiVersion("1.0")]
+
     public class CategoryController : ControllerBase
     {
         private readonly IUnitOfWork _unitOfWork;

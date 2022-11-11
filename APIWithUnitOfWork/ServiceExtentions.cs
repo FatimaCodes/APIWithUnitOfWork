@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Diagnostics;
 using Serilog;
 using APIWithUnitOfWork.Models;
+using Microsoft.Extensions.ObjectPool;
 
 namespace APIWithUnitOfWork
 {
@@ -70,5 +71,17 @@ namespace APIWithUnitOfWork
                 });
             });
         }
-    }
+        public static void ConfigureVersioning(this IServiceCollection services)
+        {
+            services.AddApiVersioning(opt =>
+            {
+                opt.ReportApiVersions = true;
+                opt.AssumeDefaultVersionWhenUnspecified = true;
+                opt.DefaultApiVersion = new Microsoft.AspNetCore.Mvc.ApiVersion(1,0);
+
+            }
+
+            );;
+        }
+        }
 }
